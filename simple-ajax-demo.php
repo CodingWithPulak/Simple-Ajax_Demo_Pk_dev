@@ -14,12 +14,15 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class Simple_Ajax_Demo {
-    public function __construct() {
+class Simple_Ajax_Demo
+{
+    public function __construct()
+    {
         add_action('init', [$this, 'init']);
     }
 
-    function init() {
+    function init()
+    {
         $this->register_post_type();
         add_action('wp_enqueue_scripts', array($this, 'enqueue_assets'));
         add_shortcode('ajax-demo', [$this, 'render_form']);
@@ -28,7 +31,8 @@ class Simple_Ajax_Demo {
         add_action('wp_ajax_nopriv_submit_newsletter', [$this, 'handle_ajax_submission']);
     }
 
-    function handle_ajax_submission() {
+    function handle_ajax_submission()
+    {
         if (!wp_verify_nonce($_POST['newsletter_nonce_field'], 'newsletter_nonce')) {
             wp_send_json_error('Security check failed');
         } else {
@@ -49,7 +53,7 @@ class Simple_Ajax_Demo {
                     "Email: %s\nIP Address: %s\nSubscribed on: %s",
                     $email,
                     $ip_address,
-                    current_time('mysql')
+                    current_time('mysql'),
                 ),
                 'post_status' => 'publish',
                 'post_type' => 'newsletter_sub'
@@ -68,7 +72,8 @@ class Simple_Ajax_Demo {
         // }
     }
 
-    public function render_form($atts) {
+    public function render_form($atts)
+    {
         $atts = shortcode_atts(array(
             'title' => 'Newsletter Subscription'
         ), $atts);
@@ -83,7 +88,8 @@ class Simple_Ajax_Demo {
             <form id="ajax-demo-form" class="ajax-demo-form">
                 <div class="ajax-demo-field">
                     <label for="newsletter-email">Email Address *</label>
-                    <input type="email" id="newsletter-email" name="newsletter_email" required placeholder="Enter your email address">
+                    <input type="email" id="newsletter-email" name="newsletter_email" required
+                        placeholder="Enter your email address">
                 </div>
 
                 <div class="ajax-demo-field">
@@ -95,7 +101,8 @@ class Simple_Ajax_Demo {
         return ob_get_clean();
     }
 
-    public function enqueue_assets() {
+    public function enqueue_assets()
+    {
         wp_enqueue_style('ajax-demo-style', plugin_dir_url(__FILE__) . 'style.css', [], '1.0.0');
         wp_enqueue_script('ajax-demo-script', plugin_dir_url(__FILE__) . 'script.js', ['jquery'], '1.0.0', true);
 
@@ -105,7 +112,8 @@ class Simple_Ajax_Demo {
         ));
     }
 
-    private function register_post_type() {
+    private function register_post_type()
+    {
         $args = array(
             'label' => 'Newsletter Subscriptions',
             'labels' => array(
@@ -135,7 +143,8 @@ class Simple_Ajax_Demo {
         register_post_type('newsletter_sub', $args);
     }
 
-    private function get_user_ip() {
+    private function get_user_ip()
+    {
         $ip_keys = array('HTTP_CF_CONNECTING_IP', 'HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'REMOTE_ADDR');
 
         foreach ($ip_keys as $key) {
