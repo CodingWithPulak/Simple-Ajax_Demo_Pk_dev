@@ -7,7 +7,7 @@
 
             const emailInput = $('#newsletter-email');
             const formData = {
-                action: 'submit_newsletterxyz',
+                action: 'submit_newsletter',
                 newsletter_nonce_field: ajax_demo.nonce,
                 newsletter_email: emailInput.val()
             }
